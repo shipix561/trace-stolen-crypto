@@ -36,6 +36,31 @@ def check(name, cond):
         FAILS.append(name)
 
 
+
+import contextlib as _ctx
+
+
+@_ctx.contextmanager
+def _tmpdir():
+    """Temporary folder whose cleanup never fails the test (Windows may hold a just-written folder for a moment)."""
+    import shutil as _sh
+    d = tempfile.mkdtemp()
+    try:
+        yield d
+    finally:
+        _sh.rmtree(d, ignore_errors=True)
+
+
+@_ctx.contextmanager
+def _keep_cwd():
+    """Restore the working directory on exit (Windows cannot delete a folder that is the current directory)."""
+    saved = os.getcwd()
+    try:
+        yield
+    finally:
+        os.chdir(saved)
+
+
 def section(fn):
     try:
         fn()
@@ -944,7 +969,7 @@ def t_investigate():
     try:
         b.get, at.http = get, fhttp
         b.DELAY = at.DELAY = cb.DELAY = 0
-        with tempfile.TemporaryDirectory() as d:
+        with _tmpdir() as d, _keep_cwd():
             lp = os.path.join(d, "labels.json")
             L = {}
             lt.merge(L, EX, "Demo Exchange", "exchange", "OFAC SDN list", "high")
