@@ -19,7 +19,8 @@
 | Bitcoin، Ethereum، TRON | تعمل على بيانات حقيقية (التتبع والتحقق من مصدر ثانٍ) |
 | Litecoin، Solana | تعمل على بيانات حقيقية (قراءة الكتل والمعاملات) |
 | Dogecoin، Bitcoin Cash | تعمل عبر Blockchair؛ لم يُفحص إلا ارتفاع آخر كتلة، فتبقى **تجريبية** |
-| BNB Chain، Polygon، Arbitrum، Base | العقد تعمل، لكن سجل العمليات يحتاج **مفتاح Etherscan مجانيًا** في `ETHERSCAN_API_KEY` (Blockscout يحجب السكربتات). لم يُجرَّب سجل العمليات بعد، فتبقى **تجريبية** |
+| Polygon وArbitrum | **تعمل** مع مفتاح Etherscan مجاني في `ETHERSCAN_API_KEY` (جُرّبت على بيانات حقيقية في 15 أكتوبر 2026) |
+| BNB Chain وBase | العقد تعمل، لكن سجل العمليات غير متاح في الخطة المجانية من Etherscan (يتطلب خطة مدفوعة)، فتبقى **تجريبية** ولا تعتمد عليها |
 
 شغّل `python live_check.py` على جهازك لترى الحالة عندك (وأرسل التقرير إن ظهر FAIL).
 
@@ -61,6 +62,6 @@ A free, open-source tool that helps victims of cryptocurrency fraud see where th
 
 **Not a recovery service. No promises. Names no one.** Results are probabilistic indicators from public data. Beware of "recovery services" that ask for fees or your seed phrase: they are scams. Run: install Python 3.8+, then `python serve.py` and open http://127.0.0.1:8765 (or double-click `run.bat` on Windows). Self-check: `python selftest.py`. License: MIT.
 
-**Networks.** Tested on real data on 15 Oct 2026 (`python live_check.py`): Bitcoin, Ethereum, TRON, Litecoin and Solana work. Dogecoin and Bitcoin Cash work through Blockchair (only the chain tip was checked, so they stay **experimental**). BNB Chain, Polygon, Arbitrum and Base: the RPC nodes work, but address history needs a free Etherscan key in `ETHERSCAN_API_KEY` (Blockscout blocks scripts), and is **experimental** until tested.
+**Networks.** Tested on real data on 15 Oct 2026 (`python live_check.py`): Bitcoin, Ethereum, TRON, Litecoin and Solana work. Polygon and Arbitrum work with a free Etherscan key in `ETHERSCAN_API_KEY`. Dogecoin and Bitcoin Cash work through Blockchair (only the chain tip was checked, so they stay **experimental**). BNB Chain and Base: the RPC nodes work, but address history is not available on Etherscan's free plan (and Blockscout blocks scripts), so they stay **experimental**.
 
 **Platform names.** The tool names a platform only from a documented label. `labels_seed_sources.csv` ships 30 addresses published by CEX.IO and Crypto.com on their own official pages (source URL on every row). Add your confirmed cases, import government notices with `labels_tool.py import-text`, and keep sources fresh with `labels_tool.py sync` (see `schedule_labels.md`).
