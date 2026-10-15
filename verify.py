@@ -239,6 +239,26 @@ def make_rpc(url):
     return call
 
 
+# Independent TRON full nodes (standard HTTP API) tried in order when no --second-tron is given.
+# NOT verified by the author: each one is probed at run time and used only if it answers like a real node.
+INDEPENDENT_TRON_NODES = ["https://tron-rpc.publicnode.com", "https://api.tronstack.io", "https://tron.drpc.org"]
+
+
+def pick_independent_tron(primary="https://api.trongrid.io", candidates=None, post_fn=None):
+    """First candidate (other than the primary provider) that returns a plausible current block, or None."""
+    post_fn = post_fn or post_json
+    for base in (candidates or INDEPENDENT_TRON_NODES):
+        if base.rstrip("/") == primary.rstrip("/"):
+            continue
+        try:
+            b = post_fn(base.rstrip("/") + "/wallet/getnowblock", {})
+            if int(b["block_header"]["raw_data"]["number"]) > 1000000:
+                return base
+        except Exception:
+            continue
+    return None
+
+
 def make_post(base):
     state = {"head": (0, None)}
 
@@ -474,7 +494,7 @@ def run_audit(g, labels, a):
         F.append(("WARN", "Second-source confirmation is not available for this network yet: nothing was confirmed by a second source"))
     elif chains.is_evm(chain) or chain == "tron":
         second = (getattr(a, "second_eth", None) if chain == "eth" else chains.get(chain)["rpc"] if chains.is_evm(chain)
-                  else getattr(a, "second_tron", None))
+                  else (getattr(a, "second_tron", None) or pick_independent_tron()))
         if not second:
             F.append(("WARN", "No second %s source configured (use --second-%s URL): nothing was confirmed "
                               "by a second source" % (chain, chain)))
