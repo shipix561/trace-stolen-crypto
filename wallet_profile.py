@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 import acct_tracer
 import btc_tracer
 import chains
+import evm_api
 
 RISK = btc_tracer.RISK
 DAY = 86400
