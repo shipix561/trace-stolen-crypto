@@ -264,6 +264,8 @@ def eth(a):
 def tron(a):
     S, ctx = "tron", {}
     post = verify.make_post(a.tron_node)
+    indep = verify.pick_independent_tron(a.tron_node)
+    vpost = verify.make_post(indep) if indep else post
     hdr = {"TRON-PRO-API-KEY": a.api_key} if a.api_key else None
 
     def now():
@@ -289,7 +291,7 @@ def tron(a):
         if "res" not in ctx:
             raise Skip("no decoded transfer")
         c, r = ctx["res"]["candidates"][0], ctx["res"]
-        st, d = verify.verify_tron_edge({"from": r["senders"][0], "to": c["to"], "txid": r["txid"], "asset": c["asset"], "amount": c["amount"]}, post)
+        st, d = verify.verify_tron_edge({"from": r["senders"][0], "to": c["to"], "txid": r["txid"], "asset": c["asset"], "amount": c["amount"]}, vpost)
         assert st in ("ok", "recent"), "second-source check says %s: %s" % (st, d)
         return "status %s" % st
     check(S, "verification of that transfer", vedge)
@@ -327,8 +329,10 @@ def tron(a):
         assert g["start"] == ctx["frm"] and "TRX" in bal, "trace or balance failed"
         return "%d transfers followed; balance read" % len(g["edges"])
     check(S, "tracer and balance run on a real address", trace)
-    if a.tron_node.rstrip("/") == acct_tracer.TRON_BASE:
-        rec(S, "independence of the second source", "WARN", "the node used for verification is TronGrid itself, the same provider the tracer reads. Pass --tron-node of another provider for a truly independent check.")
+    if indep:
+        rec(S, "independence of the second source", "PASS", "verification used an independent node: %s" % indep)
+    else:
+        rec(S, "independence of the second source", "WARN", "no independent TRON node answered (tried %s); verification used the same provider as the tracer. Pass --second-tron URL." % ", ".join(verify.INDEPENDENT_TRON_NODES))
 
 
 # ---------------- website scan ----------------
