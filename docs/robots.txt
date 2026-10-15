@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shipix561.github.io/trace-stolen-crypto/sitemap.xml
