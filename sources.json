@@ -1,0 +1,48 @@
+[
+  {
+    "name": "OFAC SDN",
+    "type": "ofac",
+    "path": "sdn.xml",
+    "note": "Updated automatically by sync (US Treasury OFAC SDN list; covers BTC, ETH, TRON, USDT addresses). If the link ever changes, download SDN.XML by hand from sanctionslist.ofac.treas.gov and save it as sdn.xml.",
+    "url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML"
+  },
+  {
+    "name": "Codatta sample",
+    "type": "csv",
+    "path": "codatta_sample.csv",
+    "address_col": "address",
+    "name_col": "entity",
+    "category_col": "category",
+    "chain_col": "chain",
+    "confidence": "medium",
+    "note": "Dataset page: huggingface.co/datasets/Codatta/Crypto-Address-Annotation-10K (10k-row sample). Save as CSV. Check the license terms before commercial use."
+  },
+  {
+    "name": "My verified cases",
+    "type": "csv",
+    "path": "my_cases.csv",
+    "name_col": "name",
+    "confidence": "high",
+    "note": "Your own confirmed addresses. Columns: address,name,category (and optional chain)."
+  },
+  {
+    "name": "evm-labels (Etherscan-derived)",
+    "type": "csv",
+    "path": "evm_labels.csv",
+    "address_col": "address",
+    "name_col": "nameTag",
+    "category_col": "label",
+    "confidence": "low",
+    "note": "github.com/dawsbot/evm-labels (MIT code, ~170k EVM labels). The data was collected from Etherscan, whose terms limit reuse: fine for your own investigation, check the terms before using it in a paid product. Export the data to CSV with columns address,nameTag,label."
+  },
+  {
+    "name": "Government notice (example)",
+    "type": "text",
+    "path": "notice.txt",
+    "label": "Government notice",
+    "category": "scam",
+    "confidence": "high",
+    "enabled": false,
+    "note": "For any government page or PDF that lists scam addresses: set a url (HTML/text) or save the file as notice.txt, set enabled to true, give label/category. Extra copies: duplicate this block."
+  }
+]

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.db
+cases/
+investigations/
+graph.json
+labels.json
+live_check_report.txt
+rec*/
+rec*.zip
+data/
